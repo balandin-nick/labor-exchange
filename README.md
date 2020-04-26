@@ -6,7 +6,7 @@ Training project for [a course on the Stepik](https://stepik.org/course/63298).
 
 ### Django server
 
-* ALLOWED_HOSTS;
+* ALLOWED_HOSTS (*example from `.env`*: ALLOWED_HOSTS=["0.0.0.0"]);
 * DB_HOST;
 * DB_PORT;
 * DB_USERNAME;

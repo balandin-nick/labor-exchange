@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.7'
 services:
   db:
     container_name: labor-exchange_db
@@ -14,11 +14,13 @@ services:
               "-c", "checkpoint_timeout=15min", "-c", "max_wal_size=2GB"]
 
   service:
-    container_name: labor-exchange_db
+    container_name: labor-exchange_service
     image: ${LABOR_EXCHANGE_IMAGE}
     build:
       context: .
       dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
     environment:
       APP_DEBUG: ${APP_DEBUG}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS}
@@ -30,5 +32,20 @@ services:
       DB_NAME: ${DB_NAME}
     volumes:
       - .:/opt/labor-exchange
-    depends_on:
-      - db
+  web:
+    container_name: labor-exchange_web
+    image: ${LABOR_EXCHANGE_IMAGE}
+    ports:
+      - "8000:8000"
+    environment:
+      APP_DEBUG: ${APP_DEBUG}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+      SECRET_KEY: ${SECRET_KEY}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    volumes:
+      - .:/opt/labor-exchange
+    command: django-server

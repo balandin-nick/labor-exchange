@@ -4,7 +4,7 @@ set -e
 
 case "$1" in
     django-server)
-        exec python manage.py runserver
+        exec python manage.py runserver 0.0.0.0:8000
         ;;
     makemigrations)
         exec python manage.py makemigrations $2
