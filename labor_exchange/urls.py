@@ -9,5 +9,5 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     # path('companies/', include('companies.urls')),
     # path('resumes/', include('resumes.urls')),
-    # path('vacancies/', include('vacancies.urls')),
+    path('vacancies/', include('vacancies.urls')),
 ]
