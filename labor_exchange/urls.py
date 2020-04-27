@@ -1,13 +1,8 @@
 from django.contrib import admin
 from django.urls import include, path
 
-from .views import HomeView
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', HomeView.as_view(), name='home'),
-    # path('companies/', include('companies.urls')),
-    # path('resumes/', include('resumes.urls')),
-    path('vacancies/', include('vacancies.urls')),
+    path('', include('workflow.urls')),
 ]

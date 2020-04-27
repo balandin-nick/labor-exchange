@@ -1,3 +1,5 @@
 django==3.0.5
 psycopg2-binary==2.8.5
 pydantic==1.5.1
+django-autoslug==1.9.7
+Pillow==7.1.2
