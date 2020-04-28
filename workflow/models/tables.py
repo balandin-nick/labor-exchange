@@ -29,9 +29,10 @@ class Company(Model):
         upload_to='company_logos',
         height_field='205',
         width_field='396',
+        null=True,
     )
     description = TextField(verbose_name='Описание')
-    employee_count = IntegerField(verbose_name='Количество сотрудников')
+    employee_count = IntegerField(verbose_name='Количество сотрудников', null=True)
 
     def delete(self, *args, **kwargs):
         self.logo.storage.delete(self.logo.path)

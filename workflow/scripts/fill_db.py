@@ -73,22 +73,34 @@ specialties = [
 ]
 
 
-if __name__ == '__main__':
+def run():
     for specialties_item in specialties:
-        specialty_instance = Specialty(code=specialties_item['code'], title=specialties_item['title'])
+        specialty_instance = Specialty(
+            code=SpecialtyChoices(specialties_item['code']),
+            title=specialties_item['title'],
+        )
         specialty_instance.save()
-        
+
     for companies_item in companies:
         company_instance = Company(name=companies_item['title'])
         company_instance.save()
 
     for jobs_item in jobs:
+        specialty = Specialty.objects.filter(code=jobs_item['cat']).first()
+        if not specialty:
+            continue
+
+        company = Company.objects.filter(name=jobs_item['company']).first()
+        if not company:
+            continue
+
         vacancy_instance = Vacancy(
             title=jobs_item['title'],
-            specialty=SpecialtyChoices(jobs_item['cat']),
-            company=jobs_item['company'],
+            specialty=specialty,
+            company=company,
             description=jobs_item['desc'],
             salary_min=jobs_item['salary_from'],
             salary_max=jobs_item['salary_to'],
             published_at=jobs_item['posted'],
         )
+        vacancy_instance.save()
