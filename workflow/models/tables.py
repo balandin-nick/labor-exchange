@@ -53,6 +53,7 @@ class Specialty(Model):
         upload_to='specialty',
         height_field='148',
         width_field='148',
+        null=True,
     )
 
     def delete(self, *args, **kwargs):
