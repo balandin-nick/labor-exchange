@@ -17,25 +17,34 @@
                 <div class="card-body px-4 pb-4">
                     <section class="tab-pane fade show active">
                         <h2 class="h4 pt-2 pb-3">Вакансии</h2>
-                        <!-- vacancy state 1 -->
-                        <div class="card mt-3">
-                            <div class="card-body px-4">
-                                <div class="row align-items-center">
-                                    <div class="col-6 col-lg-8">
-                                          <a href="#" class="mb-1">Backend-разработчик</a>
-                                          <p class="mb-1">
-                                              <span class="mr-4">120  000</span>
-                                              <a href="#" class="text-info">3 отклика</a>
-                                          </p>
-                                    </div>
 
-                                    <div class="col-6 col-lg-4 text-right">
-                                        <a href="#" class="btn btn-outline-info">Изменить</a>
+                        {% for vacancy in vacancy_list %}
+                            <div class="card mt-3">
+                                <div class="card-body px-4">
+                                    <div class="row align-items-center">
+                                        <div class="col-6 col-lg-8">
+                                              <a href="#" class="mb-1">{{ vacancy.title }}</a>
+                                              <p class="mb-1">
+                                                  <span class="mr-4">
+                                                      {% if vacancy.salary_min %}
+                                                          от {{ vacancy.salary_min }}
+                                                      {% endif %}
+
+                                                      {% if vacancy.salary_max %}
+                                                          до {{ vacancy.salary_max }}
+                                                      {% endif %}
+                                                  </span>
+                                                  <a href="#" class="text-info">3 отклика</a>
+                                              </p>
+                                        </div>
+
+                                        <div class="col-6 col-lg-4 text-right">
+                                            <a href="#" class="btn btn-outline-info">Изменить</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- END vacancy state 1 -->
+                        {% endfor %}
                     </section>
                 </div>
             </div>

@@ -34,6 +34,14 @@ class Company(Model):
     description = TextField(verbose_name='Описание')
     employee_count = IntegerField(verbose_name='Количество сотрудников', null=True)
 
+    class Meta:
+        verbose_name = 'Компания'
+        verbose_name_plural = 'Компании'
+        ordering = ['name']
+
+    def __str__(self):
+        return f'Компания "{self.name}"'
+
     def delete(self, *args, **kwargs):
         self.logo.storage.delete(self.logo.path)
         super().delete(*args, **kwargs)
@@ -57,6 +65,14 @@ class Specialty(Model):
         null=True,
     )
 
+    class Meta:
+        verbose_name = 'Специальность'
+        verbose_name_plural = 'Специальности'
+        ordering = ['title']
+
+    def __str__(self):
+        return f'Специальность "{self.title}"'
+
     def delete(self, *args, **kwargs):
         self.picture.storage.delete(self.picture.path)
         super().delete(*args, **kwargs)
@@ -72,3 +88,11 @@ class Vacancy(Model):
     salary_min = IntegerField(verbose_name='Зарплата, нижняя граница')
     salary_max = IntegerField(verbose_name='Зарплата, верхняя граница')
     published_at = DateTimeField(verbose_name='Дата публикации', auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Вакансия'
+        verbose_name_plural = 'Вакансии'
+        ordering = ['title']
+
+    def __str__(self):
+        return f'Вакансия "{self.title}"'

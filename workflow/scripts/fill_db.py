@@ -86,7 +86,7 @@ def run():
         company_instance.save()
 
     for jobs_item in jobs:
-        specialty = Specialty.objects.filter(code=jobs_item['cat']).first()
+        specialty = Specialty.objects.filter(code=SpecialtyChoices(jobs_item['cat'])).first()
         if not specialty:
             continue
 
