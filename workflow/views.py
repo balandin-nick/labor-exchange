@@ -18,6 +18,7 @@ class HomeView(TemplateView):
 class CompanyDetail(DetailView):
     model = Company
     context_object_name = 'company'
+    pk_url_kwarg = 'company_id'
     template_name = 'company_detail.html'
 
 
@@ -37,4 +38,9 @@ class VacancyList(ListView):
 
 class VacancyDetail(DetailView):
     model = Vacancy
+    context_object_name = 'vacancy'
+    pk_url_kwarg = 'vacancy_id'
     template_name = 'vacancy_detail.html'
+
+    def get_queryset(self):
+        return Vacancy.objects.select_related('company').all()

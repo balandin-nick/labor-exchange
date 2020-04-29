@@ -1,4 +1,3 @@
-from autoslug import AutoSlugField
 from django.db.models import (
     CASCADE,
     SET_NULL,
@@ -80,7 +79,6 @@ class Specialty(Model):
 
 class Vacancy(Model):
     title = CharField(verbose_name='Наименование', max_length=255)
-    slug = AutoSlugField(verbose_name='Кодовое имя', populate_from='title', always_update=True, unique=True)
     specialty = ForeignKey(to=Specialty, verbose_name='Специальность', on_delete=SET_NULL, null=True)
     company = ForeignKey(to=Company, verbose_name='Компания', on_delete=CASCADE)
     skills = TextField(verbose_name='Навыки')

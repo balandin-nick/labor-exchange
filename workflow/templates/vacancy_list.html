@@ -33,6 +33,12 @@
                                                       {% if vacancy.salary_max %}
                                                           до {{ vacancy.salary_max }}
                                                       {% endif %}
+
+                                                      {% if vacancy.salary_min or vacancy.salary_max %}
+                                                          ₽
+                                                      {% else %}
+                                                          Не указано
+                                                      {% endif %}
                                                   </span>
                                                   <a href="#" class="text-info">3 отклика</a>
                                               </p>
