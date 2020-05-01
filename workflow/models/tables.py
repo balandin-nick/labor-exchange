@@ -79,8 +79,14 @@ class Specialty(Model):
 
 class Vacancy(Model):
     title = CharField(verbose_name='Наименование', max_length=255)
-    specialty = ForeignKey(to=Specialty, verbose_name='Специальность', on_delete=SET_NULL, null=True)
-    company = ForeignKey(to=Company, verbose_name='Компания', on_delete=CASCADE)
+    specialty = ForeignKey(
+        to=Specialty,
+        verbose_name='Специальность',
+        on_delete=SET_NULL,
+        null=True,
+        related_name='vacancies',
+    )
+    company = ForeignKey(to=Company, verbose_name='Компания', on_delete=CASCADE, related_name='vacancies')
     skills = TextField(verbose_name='Навыки')
     description = TextField(verbose_name='Описание')
     salary_min = IntegerField(verbose_name='Зарплата, нижняя граница')

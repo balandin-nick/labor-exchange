@@ -1,7 +1,8 @@
-from django.views.generic import ListView, TemplateView, DetailView
+from django.db.models import Count
+from django.views.generic import DetailView, ListView, TemplateView
 
-from .models.local_types import SpecialtyChoices
 from .models import Company, Specialty, Vacancy
+from .models.local_types import SpecialtyChoices
 
 
 __all__ = [
@@ -13,6 +14,19 @@ __all__ = [
 
 class HomeView(TemplateView):
     template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['company_list'] = Company.objects \
+            .annotate(vacancies_count=Count('vacancies')) \
+            .filter(vacancies_count__gt=0)
+
+        context['specialty_list'] = Specialty.objects \
+            .filter(vacancies__company__employee_count__gte=0) \
+            .annotate(vacancies_count=Count('vacancies'))
+
+        return context
 
 
 class CompanyDetail(DetailView):
