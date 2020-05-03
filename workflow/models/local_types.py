@@ -26,14 +26,14 @@ class GradeChoices(Enum):
 
 
 class SpecialtyChoices(Enum):
-    frontend = 'frontend'
-    backend = 'backend'
-    gamedev = 'gamedev'
-    devops = 'devops'
-    design = 'design'
-    products = 'products'
-    management = 'management'
-    testing = 'testing'
+    frontend = 'Фронтенд'
+    backend = 'Бэкенд'
+    gamedev = 'Геймдев'
+    devops = 'Девопс'
+    design = 'Дизайн'
+    products = 'Продукты'
+    management = 'Менеджмент'
+    testing = 'Тестирование'
 
 
 class WorkStatusChoices(Enum):

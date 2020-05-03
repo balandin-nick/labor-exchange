@@ -1,5 +1,12 @@
-from workflow.models.local_types import SpecialtyChoices
-from workflow.models.tables import Company, Specialty, Vacancy
+from pathlib import Path
+
+from labor_exchange.settings import BASE_DIR, MEDIA_ROOT
+from userflow.models import LaborExchangeUser
+from workflow.models import Company, Resume, Specialty, Vacancy, VacancyResponse
+from workflow.models.local_types import EducationChoices, GradeChoices, SpecialtyChoices, WorkStatusChoices
+
+
+MEDIA_DIRECTORY = Path(BASE_DIR) / MEDIA_ROOT / 'company_logos'
 
 
 jobs = [
@@ -73,34 +80,57 @@ specialties = [
 ]
 
 
-def run():
-    for specialties_item in specialties:
+def _fill_specialties() -> None:
+    for specialty_item in SpecialtyChoices:
         specialty_instance = Specialty(
-            code=SpecialtyChoices(specialties_item['code']),
-            title=specialties_item['title'],
+            code=specialty_item,
+            title=specialty_item.value,
         )
         specialty_instance.save()
 
-    for companies_item in companies:
-        company_instance = Company(name=companies_item['title'])
+
+def _fill_companies(owner: LaborExchangeUser) -> None:
+    for index, companies_item in enumerate(companies):
+        company_instance = Company(
+            name=companies_item['title'],
+            location='Жопа мира',
+            logo=str(MEDIA_DIRECTORY / f'logo{index}.png'),
+            owner=owner,
+            description='Это компания без описания, потому что её HR — ленивые задницы',
+        )
         company_instance.save()
 
-    for jobs_item in jobs:
-        specialty = Specialty.objects.filter(code=SpecialtyChoices(jobs_item['cat'])).first()
-        if not specialty:
-            continue
 
-        company = Company.objects.filter(name=jobs_item['company']).first()
-        if not company:
-            continue
+def run():
+    ivan = LaborExchangeUser(
+        username='topor',
+        first_name='Иван',
+        last_name='Торопыжкин',
+        email='ivan@torop.ru',
+        phone='89997776655',
+        password='Torop1234',
+    )
+    ivan.save()
 
-        vacancy_instance = Vacancy(
-            title=jobs_item['title'],
-            specialty=specialty,
-            company=company,
-            description=jobs_item['desc'],
-            salary_min=jobs_item['salary_from'],
-            salary_max=jobs_item['salary_to'],
-            published_at=jobs_item['posted'],
-        )
-        vacancy_instance.save()
+    _fill_specialties()
+    _fill_companies(ivan)
+
+    # for jobs_item in jobs:
+    #     specialty = Specialty.objects.filter(code=SpecialtyChoices(jobs_item['cat'])).first()
+    #     if not specialty:
+    #         continue
+    #
+    #     company = Company.objects.filter(name=jobs_item['company']).first()
+    #     if not company:
+    #         continue
+    #
+    #     vacancy_instance = Vacancy(
+    #         title=jobs_item['title'],
+    #         specialty=specialty,
+    #         company=company,
+    #         description=jobs_item['desc'],
+    #         salary_min=jobs_item['salary_from'],
+    #         salary_max=jobs_item['salary_to'],
+    #         published_at=jobs_item['posted'],
+    #     )
+    #     vacancy_instance.save()

@@ -26,13 +26,7 @@ __all__ = [
 class Company(Model):
     name = CharField(verbose_name='Название', max_length=255)
     location = CharField(verbose_name='Локация', max_length=100)
-    logo = ImageField(
-        verbose_name='Логотип',
-        upload_to='company_logos',
-        height_field='205',
-        width_field='396',
-        null=True,
-    )
+    logo = ImageField(verbose_name='Логотип', upload_to='company_logos', null=True)
     owner = ForeignKey(
         to='userflow.LaborExchangeUser',
         verbose_name='Владелец',
