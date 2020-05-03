@@ -8,34 +8,19 @@ from django.db.models import (
     IntegerField,
     Model,
     TextField,
+    URLField,
 )
 
-from .local_types import GradeChoices, SpecialtyChoices, WorkStatusChoices
+from .local_types import EducationChoices, GradeChoices, SpecialtyChoices, WorkStatusChoices
 
 
 __all__ = [
     'Company',
     'Specialty',
+    'Resume',
     'Vacancy',
+    'VacancyResponse',
 ]
-
-
-class Application(Model):
-    username = CharField(verbose_name='Имя', max_length=255)
-    phone = CharField(verbose_name='Телефон', max_length=12)
-    covering_letter = TextField(verbose_name='Сопроводительное письмо')
-    vacancy = ForeignKey(
-        to='Vacancy',
-        verbose_name='Вакансия',
-        on_delete=CASCADE,
-        related_name='applications',
-    )
-    user = ForeignKey(
-        to='LaborExchangeUser',
-        verbose_name='Пользователь',
-        on_delete=CASCADE,
-        related_name='applications',
-    )
 
 
 class Company(Model):
@@ -48,9 +33,14 @@ class Company(Model):
         width_field='396',
         null=True,
     )
-    description = TextField(verbose_name='Описание')
-    owner = ForeignKey(to='LaborExchangeUser', verbose_name='Владелец', on_delete=CASCADE, related_name='companies')
+    owner = ForeignKey(
+        to='userflow.LaborExchangeUser',
+        verbose_name='Владелец',
+        on_delete=CASCADE,
+        related_name='companies',
+    )
     employee_count = IntegerField(verbose_name='Количество сотрудников', null=True)
+    description = TextField(verbose_name='Описание')
 
     class Meta:
         verbose_name = 'Компания'
@@ -65,44 +55,6 @@ class Company(Model):
         super().delete(*args, **kwargs)
 
 
-class Resume(Model):
-    user = ForeignKey(
-        to='LaborExchangeUser',
-        verbose_name='Специальность',
-        on_delete=SET_NULL,
-        null=True,
-        related_name='vacancies',
-    )
-    name = CharField(verbose_name='Имя', max_length=150)
-    surname = CharField(verbose_name='Фамилия', max_length=150)
-    status = CharField(
-        verbose_name='Поисковый статус',
-        choices=[
-            (str(status_item), status_item.value)
-            for status_item in WorkStatusChoices
-        ],
-        max_length=50,
-    )
-    salary = IntegerField(verbose_name='Вознаграждение')
-    specialty = ForeignKey(
-        to='Specialty',
-        verbose_name='Специализация',
-        on_delete=SET_NULL,
-        related_name='resumes',
-    )
-    grade = CharField(
-        verbose_name='Квалификация',
-        choices=[
-            (str(grade_item), grade_item.value)
-            for grade_item in GradeChoices
-        ],
-        max_length=10,
-    )
-    education = CharField(verbose_name='Образование', max_length=250)
-    expirience = IntegerField(verbose_name='Опыт работы')
-    portfolio = TextField(verbose_name='Портфолио')
-
-
 class Specialty(Model):
     code = CharField(
         verbose_name='Код',
@@ -112,7 +64,7 @@ class Specialty(Model):
         ],
         max_length=50,
     )
-    title = CharField(verbose_name='Наименование', max_length=50)
+    title = CharField(verbose_name='Наименование', max_length=100)
     picture = ImageField(
         verbose_name='Изображение',
         upload_to='specialty',
@@ -132,6 +84,60 @@ class Specialty(Model):
     def delete(self, *args, **kwargs):
         self.picture.storage.delete(self.picture.path)
         super().delete(*args, **kwargs)
+
+
+class Resume(Model):
+    user = ForeignKey(
+        to='userflow.LaborExchangeUser',
+        verbose_name='Специальность',
+        on_delete=SET_NULL,
+        null=True,
+        related_name='resumes',
+    )
+    name = CharField(verbose_name='Имя', max_length=150)
+    surname = CharField(verbose_name='Фамилия', max_length=150)
+    salary = IntegerField(verbose_name='Вознаграждение', blank=True, null=True)
+    status = CharField(
+        verbose_name='Поисковый статус',
+        choices=[
+            (str(status_item), status_item.value)
+            for status_item in WorkStatusChoices
+        ],
+        max_length=50,
+    )
+    specialty = ForeignKey(
+        to=Specialty,
+        verbose_name='Специализация',
+        null=True,
+        on_delete=SET_NULL,
+        related_name='resumes',
+    )
+    grade = CharField(
+        verbose_name='Квалификация',
+        choices=[
+            (str(grade_item), grade_item.value)
+            for grade_item in GradeChoices
+        ],
+        max_length=50,
+    )
+    education = CharField(
+        verbose_name='Образование',
+        choices=[
+            (str(education_item), education_item.value)
+            for education_item in EducationChoices
+        ],
+        max_length=250,
+    )
+    experience = IntegerField(verbose_name='Опыт работы (лет)')
+    portfolio = URLField(verbose_name='Портфолио', blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Резюме'
+        verbose_name_plural = 'Резюме'
+        ordering = ['surname', 'name']
+
+    def __str__(self):
+        return f'{self.surname} {self.name}, резюме'
 
 
 class Vacancy(Model):
@@ -157,3 +163,27 @@ class Vacancy(Model):
 
     def __str__(self):
         return f'Вакансия "{self.title}"'
+
+
+class VacancyResponse(Model):
+    covering_letter = TextField(verbose_name='Сопроводительное письмо')
+    vacancy = ForeignKey(
+        to='Vacancy',
+        verbose_name='Вакансия',
+        on_delete=CASCADE,
+        related_name='applications',
+    )
+    user = ForeignKey(
+        to='userflow.LaborExchangeUser',
+        verbose_name='Пользователь',
+        on_delete=CASCADE,
+        related_name='applications',
+    )
+
+    class Meta:
+        verbose_name = 'Отклик на вакансию'
+        verbose_name_plural = 'Отклики на вакансии'
+        ordering = ['vacancy', 'user']
+
+    def __str__(self):
+        return f'Отклик {self.user} на вакансию "{self.vacancy}"'
