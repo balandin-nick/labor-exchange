@@ -5,13 +5,18 @@ from django.contrib.admin import AdminSite
 from .enviroments import DatabaseSettings, DjangoSettings, LoggingSettings
 
 
+django_settings = DjangoSettings()
+database_settings = DatabaseSettings()
+logging_settings = LoggingSettings()
+
+
 AdminSite.site_header = 'Биржа труда'
 AdminSite.index_title = 'Панель администратора'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = DjangoSettings().secret_key
-DEBUG = DjangoSettings().debug
-ALLOWED_HOSTS = DjangoSettings().allowed_hosts
+SECRET_KEY = django_settings.secret_key
+DEBUG = django_settings.debug
+ALLOWED_HOSTS = django_settings.allowed_hosts
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -62,11 +67,11 @@ WSGI_APPLICATION = 'labor_exchange.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': DatabaseSettings().host,
-        'PORT': DatabaseSettings().port,
-        'NAME': DatabaseSettings().db_name,
-        'USER': DatabaseSettings().username,
-        'PASSWORD': DatabaseSettings().password,
+        'HOST': database_settings.host,
+        'PORT': database_settings.port,
+        'NAME': database_settings.db_name,
+        'USER': database_settings.username,
+        'PASSWORD': database_settings.password,
     }
 }
 

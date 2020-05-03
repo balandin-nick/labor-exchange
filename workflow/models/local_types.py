@@ -2,8 +2,18 @@ from enum import Enum
 
 
 __all__ = [
+    'GradeChoices',
     'SpecialtyChoices',
+    'WorkStatusChoices',
 ]
+
+
+class GradeChoices(Enum):
+    intern = 'intern'
+    junior = 'junior'
+    middle = 'middle'
+    senior = 'senior'
+    lead = 'lead'
 
 
 class SpecialtyChoices(Enum):
@@ -15,3 +25,9 @@ class SpecialtyChoices(Enum):
     products = 'products'
     management = 'management'
     testing = 'testing'
+
+
+class WorkStatusChoices(Enum):
+    not_in_search = 'Не ищу работу'
+    consideration = 'Рассматриваю предложения'
+    in_search = 'Ищу работу'

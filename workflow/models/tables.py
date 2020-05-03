@@ -10,7 +10,7 @@ from django.db.models import (
     TextField,
 )
 
-from .local_types import SpecialtyChoices
+from .local_types import GradeChoices, SpecialtyChoices, WorkStatusChoices
 
 
 __all__ = [
@@ -18,6 +18,24 @@ __all__ = [
     'Specialty',
     'Vacancy',
 ]
+
+
+class Application(Model):
+    username = CharField(verbose_name='Имя', max_length=255)
+    phone = CharField(verbose_name='Телефон', max_length=12)
+    covering_letter = TextField(verbose_name='Сопроводительное письмо')
+    vacancy = ForeignKey(
+        to='Vacancy',
+        verbose_name='Вакансия',
+        on_delete=CASCADE,
+        related_name='applications',
+    )
+    user = ForeignKey(
+        to='LaborExchangeUser',
+        verbose_name='Пользователь',
+        on_delete=CASCADE,
+        related_name='applications',
+    )
 
 
 class Company(Model):
@@ -31,6 +49,7 @@ class Company(Model):
         null=True,
     )
     description = TextField(verbose_name='Описание')
+    owner = ForeignKey(to='LaborExchangeUser', verbose_name='Владелец', on_delete=CASCADE, related_name='companies')
     employee_count = IntegerField(verbose_name='Количество сотрудников', null=True)
 
     class Meta:
@@ -44,6 +63,44 @@ class Company(Model):
     def delete(self, *args, **kwargs):
         self.logo.storage.delete(self.logo.path)
         super().delete(*args, **kwargs)
+
+
+class Resume(Model):
+    user = ForeignKey(
+        to='LaborExchangeUser',
+        verbose_name='Специальность',
+        on_delete=SET_NULL,
+        null=True,
+        related_name='vacancies',
+    )
+    name = CharField(verbose_name='Имя', max_length=150)
+    surname = CharField(verbose_name='Фамилия', max_length=150)
+    status = CharField(
+        verbose_name='Поисковый статус',
+        choices=[
+            (str(status_item), status_item.value)
+            for status_item in WorkStatusChoices
+        ],
+        max_length=50,
+    )
+    salary = IntegerField(verbose_name='Вознаграждение')
+    specialty = ForeignKey(
+        to='Specialty',
+        verbose_name='Специализация',
+        on_delete=SET_NULL,
+        related_name='resumes',
+    )
+    grade = CharField(
+        verbose_name='Квалификация',
+        choices=[
+            (str(grade_item), grade_item.value)
+            for grade_item in GradeChoices
+        ],
+        max_length=10,
+    )
+    education = CharField(verbose_name='Образование', max_length=250)
+    expirience = IntegerField(verbose_name='Опыт работы')
+    portfolio = TextField(verbose_name='Портфолио')
 
 
 class Specialty(Model):

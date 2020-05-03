@@ -6,6 +6,7 @@ from django.views.generic import CreateView
 
 
 __all__ = [
+    'UserLoginView',
     'UserSignupView',
 ]
 
