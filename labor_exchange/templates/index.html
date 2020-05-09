@@ -13,12 +13,12 @@
             {% for specialty in specialty_list %}
                 <div class="col-6 col-md-6 col-lg-3">
                     <div class="card pt-4 text-center mb-4">
-                        <img class="mx-auto d-block" src="https://place-hold.it/80x80" width="80" height="80" alt="">
+                        <img class="mx-auto d-block" src="{{ specialty.picture.url }}" width="80" height="80" alt="">
                         <div class="card-body">
                             <p class="card-text mb-2">{{ specialty.title }}</p>
                             <p class="card-text">
-                                <a href="#">2
-{#                                    {{ specialty.vacancies_count }}#}
+                                <a href="{% url 'vacancy-list-by-specialty' specialty_code=specialty.code %}">
+                                    Количество вакансий: {{ specialty.vacancies.count }}
                                 </a>
                             </p>
                         </div>
@@ -32,7 +32,7 @@
         <h2 class="h2 font-weight-normal text-center mb-5">Нам доверяют лучшие компании</h2>
         <div class="row mb-0">
             {% for company in company_list %}
-                {% include 'includes/company_card.html' %}
+                {% include 'includes/company_short_card.html' %}
             {% endfor %}
         </div>
     </section>

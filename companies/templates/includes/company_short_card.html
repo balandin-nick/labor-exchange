@@ -7,10 +7,10 @@
         </a>
 
         <div class="card-body">
-            <p class="card-text">3
-{#                                <a href="{% url 'company-detail' company_id=company.pk %}">#}
-{#                                    Количество вакансий: {{ company.vacancies_count }}#}
-{#                                </a>#}
+            <p class="card-text">
+                <a href="{% url 'company-detail' company_id=company.pk %}">
+                    Количество вакансий: {{ company.vacancies.count }}
+                </a>
             </p>
         </div>
     </div>

@@ -13,7 +13,7 @@ __all__ = [
 
 
 class HomeView(TemplateView):
-    template_name = 'index.html'
+    template_name = '../labor_exchange/templates/index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -13,6 +13,7 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('accounts/', include('accounts.urls')),
     path('companies/', include('companies.urls')),
+    path('vacancies/', include('vacancies.urls')),
 ]
 
 if DEBUG:

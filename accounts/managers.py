@@ -1,5 +1,6 @@
-from django.contrib.auth.models import BaseUserManager
 from typing import Optional
+
+from django.contrib.auth.models import BaseUserManager
 
 
 __all__ = [
@@ -10,7 +11,7 @@ __all__ = [
 class LaborExchangeUserManager(BaseUserManager):
     def create_user(self, name: str, surname: str, email: str, password: Optional[str] = None):
         if not all([name, surname, email]):
-            raise ValueError('Users must have an email address')
+            raise ValueError('Users must have an email address, name and surname')
 
         user = self.model(
             name=name,

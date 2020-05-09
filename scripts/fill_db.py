@@ -1,37 +1,45 @@
+from enum import Enum
 from pathlib import Path
 from random import choice
 from typing import List
 
-from django.contrib.auth.models import User
-from workflow.models import Company, Specialty, Vacancy
-from workflow.models.local_types import SpecialtyChoices
-
 from accounts.models import LaborExchangeUser
-from labor_exchange.settings import BASE_DIR, MEDIA_ROOT
-
-
-MEDIA_DIRECTORY = Path(BASE_DIR) / MEDIA_ROOT / 'company_logos'
+from companies.models import Company
+from vacancies.models import Specialty, Vacancy
 
 
 def _fill_specialties() -> None:
+    class SpecialtyChoices(Enum):
+        frontend = 'Фронтенд'
+        backend = 'Бэкенд'
+        gamedev = 'Геймдев'
+        devops = 'Девопс'
+        design = 'Дизайн'
+        products = 'Продукты'
+        management = 'Менеджмент'
+        testing = 'Тестирование'
+
+    specialty_logos_directory = Path('specialty_logos')
     for specialty_item in SpecialtyChoices:
         specialty_instance = Specialty(
-            code=specialty_item,
+            code=specialty_item.name,
             title=specialty_item.value,
+            picture=str(specialty_logos_directory / f'specty_{specialty_item.name}.png')
         )
         specialty_instance.save()
 
 
 def _fill_companies() -> None:
+    company_logos_directory = Path('company_logos')
     company_names: List[str] = [
-        'workiro',
-        'rebelrage',
-        'staffingsmarter',
-        'evilthreat h',
-        'hirey ',
-        'swiftattack',
-        'troller',
-        'primalassault',
+        'Workiro',
+        'Rebel Rage',
+        'Staffing Smarter',
+        'Evilthreat',
+        'Hirey',
+        'SwiftAttack',
+        'TROLLER',
+        'Primal Assault',
     ]
 
     for index, companies_name in enumerate(company_names):
@@ -39,9 +47,8 @@ def _fill_companies() -> None:
         was_created: bool
 
         owner, was_created = LaborExchangeUser.objects.get_or_create(
-            username=f'owner{index}',
-            first_name=f'Owner_{index}',
-            last_name=f'Ownerov_{index}',
+            name=f'Владелец',
+            surname=f'Хозяинов_{index}',
             email=f'owner{index}@owner.ru',
             phone=f'8999777665{index}',
             password=f'Djangotest{index}',
@@ -50,9 +57,10 @@ def _fill_companies() -> None:
         company_instance = Company(
             name=companies_name,
             location='Самый лучший город на Земле',
-            logo=str(MEDIA_DIRECTORY / f'logo{index}.png'),
+            logo=str(company_logos_directory / f'logo{index + 1}.png'),
             owner=owner,
-            description='Это компания без описания, потому что её HR специалисты — ленивые задницы',
+            employee_count=choice(range(1, 300)),
+            description='Это компания без описания, потому что её HR-специалисты — ленивые задницы',
         )
         company_instance.save()
 
@@ -82,15 +90,18 @@ def _fill_vacancies():
                 description=f'Описание вакансии №{index} для компании {company.name}',
                 salary_min=salary_min,
                 salary_max=salary_min + choice(range(1, 10)) * 10000,
+                skills='Бэкенд, Старший (Senior), C#, ASP.NET MVC, MySQL, Git',
             )
             vacancy_instance.save()
 
 
 def run():
-    User.objects.get_or_create(
-        username=f'admin',
-        email=f'admin@admin.ru',
-        password=f'Qwerty12',
+    LaborExchangeUser.objects.get_or_create(
+        name='Эникей',
+        surname='Логинов',
+        email='admin@admin.ru',
+        password='Qwerty12',
+        is_admin=True,
         is_superuser=True,
     )
 

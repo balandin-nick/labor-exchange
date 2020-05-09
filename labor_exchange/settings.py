@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'accounts',
     'companies',
+    'vacancies',
 ]
 
 MIDDLEWARE = [
@@ -44,8 +45,10 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'labor_exchange', 'templates'),
             os.path.join(BASE_DIR, 'accounts', 'templates'),
             os.path.join(BASE_DIR, 'companies', 'templates'),
+            os.path.join(BASE_DIR, 'vacancies', 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
