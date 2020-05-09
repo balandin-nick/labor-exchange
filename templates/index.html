@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% block title_prefix %}{% endblock %}
+    Джуманджи
+{% endblock %}
+
+{% block content %}
+    <section class="mt-5 pt-3">
+        <h2 class="h2 font-weight-normal text-center mb-5">Вакансии по рубрикам</h2>
+
+        <div class="row mb-0">
+            {% for specialty in specialty_list %}
+                <div class="col-6 col-md-6 col-lg-3">
+                    <div class="card pt-4 text-center mb-4">
+                        <img class="mx-auto d-block" src="https://place-hold.it/80x80" width="80" height="80" alt="">
+                        <div class="card-body">
+                            <p class="card-text mb-2">{{ specialty.title }}</p>
+                            <p class="card-text">
+                                <a href="#">2
+{#                                    {{ specialty.vacancies_count }}#}
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="my-5 pt-3">
+        <h2 class="h2 font-weight-normal text-center mb-5">Нам доверяют лучшие компании</h2>
+        <div class="row mb-0">
+            {% for company in company_list %}
+                {% include 'includes/company_card.html' %}
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

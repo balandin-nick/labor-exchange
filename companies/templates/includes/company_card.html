@@ -1,0 +1,17 @@
+<div class="col-6 col-md-6 col-lg-3">
+    <div class="card pt-4 text-center mb-4">
+        <a href="{% url 'company-detail' company_id=company.pk %}"
+           style="max-width: 150px;"
+           class="mx-auto d-block">
+            <img class="mx-auto d-block mw-100" src="{{ company.logo.url }}" alt="Логотип">
+        </a>
+
+        <div class="card-body">
+            <p class="card-text">3
+{#                                <a href="{% url 'company-detail' company_id=company.pk %}">#}
+{#                                    Количество вакансий: {{ company.vacancies_count }}#}
+{#                                </a>#}
+            </p>
+        </div>
+    </div>
+</div>

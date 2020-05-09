@@ -33,7 +33,7 @@ class CompanyDetail(DetailView):
     model = Company
     context_object_name = 'company'
     pk_url_kwarg = 'company_id'
-    template_name = 'company_detail.html'
+    template_name = 'my_company/display.html'
 
 
 class VacancyList(ListView):
@@ -58,3 +58,8 @@ class VacancyDetail(DetailView):
 
     def get_queryset(self):
         return Vacancy.objects.select_related('company').all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context

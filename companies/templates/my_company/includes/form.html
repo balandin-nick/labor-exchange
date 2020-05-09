@@ -1,0 +1,72 @@
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark" for="name">{{ form.name.label_tag }}</label>
+                <input class="form-control"
+                       type="text"
+                       value="{{ form.name.value|default_if_none:"" }}"
+                       id="name"
+                       name="name">
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label class="mb-2 text-dark" for="logo">{{ form.logo.label_tag }}</label>
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <img src="{% if form.instance.logo %}{{ form.instance.logo.url }}{% endif %}" alt="" style="max-width: 120px;height: auto;">
+                    </div>
+
+                    <div class="col-6" style="position: relative;">
+                        <div class="input-group-prepend" style="position: absolute; top: 0;right: 15px;">
+                            <span class="btn btn-info px-4">Загрузить</span>
+                        </div>
+
+                        <div class="custom-file" style="">
+                            <input type="file" class="custom-file-input" id="logo" name="logo">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark" for="employee_count">{{ form.employee_count.label_tag }}</label>
+                <input class="form-control"
+                       type="text"
+                       value="{{ form.employee_count.value|default_if_none:"" }}"
+                       id="employee_count"
+                       name="employee_count">
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark" for="location">{{ form.location.label_tag }}</label>
+                <input class="form-control"
+                       type="text"
+                       value="{{ form.location.value|default_if_none:"" }}"
+                       id="location"
+                       name="location">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group pb-2">
+        <label class="mb-2 text-dark" for="description">{{ form.description.label_tag }}</label>
+        <textarea class="form-control"
+                  rows="4"
+                  style="color:#000;"
+                  id="description"
+                  name="description">{{ form.description.value|default_if_none:"" }}</textarea>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-info" value="Сохранить">
+    </div>
+</form>

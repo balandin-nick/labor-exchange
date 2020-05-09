@@ -2,10 +2,12 @@ from pathlib import Path
 from random import choice
 from typing import List
 
-from labor_exchange.settings import BASE_DIR, MEDIA_ROOT
-from userflow.models import LaborExchangeUser
+from django.contrib.auth.models import User
 from workflow.models import Company, Specialty, Vacancy
 from workflow.models.local_types import SpecialtyChoices
+
+from accounts.models import LaborExchangeUser
+from labor_exchange.settings import BASE_DIR, MEDIA_ROOT
 
 
 MEDIA_DIRECTORY = Path(BASE_DIR) / MEDIA_ROOT / 'company_logos'
@@ -40,7 +42,7 @@ def _fill_companies() -> None:
             username=f'owner{index}',
             first_name=f'Owner_{index}',
             last_name=f'Ownerov_{index}',
-            email=f'ivan{index}@torop.ru',
+            email=f'owner{index}@owner.ru',
             phone=f'8999777665{index}',
             password=f'Djangotest{index}',
         )
@@ -85,6 +87,13 @@ def _fill_vacancies():
 
 
 def run():
+    User.objects.get_or_create(
+        username=f'admin',
+        email=f'admin@admin.ru',
+        password=f'Qwerty12',
+        is_superuser=True,
+    )
+
     _fill_specialties()
     _fill_companies()
     _fill_vacancies()

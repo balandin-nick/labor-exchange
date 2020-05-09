@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="my-5 pt-3">
+        <h2 class="h2 font-weight-normal text-center mb-5">Нам доверяют лучшие компании</h2>
+        <div class="row mb-0">
+            {% for company in company_list %}
+                {% include 'includes/company_card.html' %}
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

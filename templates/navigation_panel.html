@@ -9,8 +9,8 @@
 
     <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         <ul class="navbar-nav col-10">
-            <li class="nav-item"><a class="nav-link" href="{% url 'vacancy-list' %}">Вакансии</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Компании</a></li>
+{#            <li class="nav-item"><a class="nav-link" href="{% url 'vacancy-list' %}">Вакансии</a></li>#}
+            <li class="nav-item"><a class="nav-link" href="{% url 'company-list' %}">Компании</a></li>
             <li class="nav-item"><a class="nav-link" href="#">О проекте</a></li>
         </ul>
 
@@ -23,13 +23,13 @@
                                 data-toggle="dropdown"
                                 aria-haspopup="true"
                                 aria-expanded="false">
-                            {{ user.username }}
+                            {{ user.name }} {{ user.surname }}
                         </button>
 
                         <div class="dropdown-menu dropdown-menu-right mt-3">
                             <a href="#" class="dropdown-item py-2">Профиль</a>
                             <a href="#" class="dropdown-item py-2">Резюме</a>
-                            <a href="#" class="dropdown-item py-2">Компания</a>
+                            <a href="{% url 'my-company-control' %}" class="dropdown-item py-2">Компания</a>
                             <a href="{% url 'logout' %}" class="dropdown-item py-2">Выйти</a>
                         </div>
                     </div>

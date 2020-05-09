@@ -11,6 +11,8 @@ from django.db.models import (
     URLField,
 )
 
+from labor_exchange.settings import AUTH_USER_MODEL
+
 from .local_types import EducationChoices, GradeChoices, SpecialtyChoices, WorkStatusChoices
 
 
@@ -28,10 +30,11 @@ class Company(Model):
     location = CharField(verbose_name='Локация', max_length=100)
     logo = ImageField(verbose_name='Логотип', upload_to='company_logos', null=True)
     owner = ForeignKey(
-        to='userflow.LaborExchangeUser',
+        to=AUTH_USER_MODEL,
         verbose_name='Владелец',
         on_delete=CASCADE,
         related_name='companies',
+        unique=True,
     )
     employee_count = IntegerField(verbose_name='Количество сотрудников', null=True)
     description = TextField(verbose_name='Описание')
@@ -82,7 +85,7 @@ class Specialty(Model):
 
 class Resume(Model):
     user = ForeignKey(
-        to='userflow.LaborExchangeUser',
+        to=AUTH_USER_MODEL,
         verbose_name='Специальность',
         on_delete=SET_NULL,
         null=True,
@@ -157,6 +160,9 @@ class Vacancy(Model):
 
     def __str__(self):
         return f'Вакансия "{self.title}"'
+
+    def get_url(self) -> str:
+        return f'/vacancies/{self.pk}'
 
 
 class VacancyResponse(Model):

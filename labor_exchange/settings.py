@@ -9,10 +9,7 @@ django_settings = DjangoSettings()
 database_settings = DatabaseSettings()
 logging_settings = LoggingSettings()
 
-
-AdminSite.site_header = 'Биржа труда'
-AdminSite.index_title = 'Панель администратора'
-
+# region --- Default settings
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = django_settings.secret_key
 DEBUG = django_settings.debug
@@ -26,8 +23,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'userflow',
-    'workflow',
+    'accounts',
+    'companies',
 ]
 
 MIDDLEWARE = [
@@ -47,8 +44,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'userflow', 'templates'),
-            os.path.join(BASE_DIR, 'workflow', 'templates'),
+            os.path.join(BASE_DIR, 'accounts', 'templates'),
+            os.path.join(BASE_DIR, 'companies', 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -95,11 +92,17 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+# endregion
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_ROOT = 'media'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+AUTH_USER_MODEL = 'accounts.LaborExchangeUser'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+AdminSite.site_header = 'Биржа труда'
+AdminSite.index_title = 'Панель администратора'
