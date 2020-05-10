@@ -1,6 +1,7 @@
 import os
 
 from django.contrib.admin import AdminSite
+from django.urls import reverse_lazy
 
 from .enviroments import DatabaseSettings, DjangoSettings, LoggingSettings
 
@@ -91,7 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'ru-RU'
-TIME_ZONE = 'UTC'
+TIME_ZONE = str(django_settings.timezone)
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -104,6 +105,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'accounts.LaborExchangeUser'
+
+LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 

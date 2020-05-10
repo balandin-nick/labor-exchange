@@ -1,3 +1,4 @@
+from datetime import timezone as tz
 from typing import List
 
 from pydantic import BaseSettings, Field
@@ -19,6 +20,7 @@ class DjangoSettings(_SettingsConfigureModel):
     allowed_hosts: List[str] = Field(default='', env='allowed_hosts')
     debug: bool = Field(default=False, env='app_debug')
     secret_key: str = Field(..., env='secret_key')
+    timezone: tz = tz.utc
 
 
 class DatabaseSettings(_SettingsConfigureModel):

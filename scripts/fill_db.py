@@ -44,15 +44,18 @@ def _fill_companies() -> None:
 
     for index, companies_name in enumerate(company_names):
         owner: LaborExchangeUser
-        was_created: bool
+        is_created: bool
 
-        owner, was_created = LaborExchangeUser.objects.get_or_create(
+        owner, is_created = LaborExchangeUser.objects.get_or_create(
             name=f'Владелец',
             surname=f'Хозяинов_{index}',
             email=f'owner{index}@owner.ru',
             phone=f'8999777665{index}',
-            password=f'Djangotest{index}',
         )
+
+        assert is_created, 'Admin was not created'
+        owner.set_password(f'Djangotest{index}')
+        owner.save()
 
         company_instance = Company(
             name=companies_name,
@@ -96,14 +99,20 @@ def _fill_vacancies():
 
 
 def run():
-    LaborExchangeUser.objects.get_or_create(
+    admin: LaborExchangeUser
+    is_created: bool
+
+    admin, is_created = LaborExchangeUser.objects.get_or_create(
         name='Эникей',
         surname='Логинов',
         email='admin@admin.ru',
-        password='Qwerty12',
         is_admin=True,
         is_superuser=True,
     )
+
+    assert is_created, 'Admin was not created'
+    admin.set_password('Qwerty12')
+    admin.save()
 
     _fill_specialties()
     _fill_companies()

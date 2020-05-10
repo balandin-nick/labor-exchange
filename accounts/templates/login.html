@@ -12,22 +12,21 @@
 
                 <div class="mt-5 form-label-group">
                     <p class="text-muted">Электропочта</p>
-                    <input type="email" id="inputEmail" class="form-control" required autofocus>
-                    <label for="inputEmail"></label>
+                    <input type="email" id="email" name="email" class="form-control" required autofocus>
+                    <label for="email"></label>
                 </div>
 
                 <div class="form-label-group">
                     <p class="text-muted">Пароль</p>
-                    <input type="password" id="inputPassword" class="form-control" required>
-                    <label for="inputPassword"></label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                    <label for="password"></label>
                 </div>
 
                 <div class="checkbox mb-3"></div>
                 <button class="btn btn-primary btn-lg btn-block" type="submit">Войти</button>
-
-{#                <table>{{ form.as_table }}</table>#}
-{#                <button type="submit">Войти</button>#}
             </form>
         </div>
     </div>
+
+    {% include 'includes/form_errors.html' %}
 {% endblock %}
