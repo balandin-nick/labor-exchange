@@ -15,8 +15,8 @@
         </ul>
 
         <ul class="navbar-nav col-2 justify-content-end">
-            <li class="nav-item active">
-                {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
+                <li class="nav-item active">
                     <div class="btn-group">
                         <button type="button"
                                 class="btn dropdown-toggle font-weight-bold"
@@ -33,11 +33,16 @@
                             <a href="{% url 'logout' %}" class="dropdown-item py-2">Выйти</a>
                         </div>
                     </div>
+                </li>
 
-                {% else %}
+            {% else %}
+                <li class="nav-item active">
                     <a href="{% url 'login' %}" class="nav-link font-weight-bold">Вход</a>
-                {% endif %}
-            </li>
+                </li>
+                <li class="nav-item active">
+                    <a href="{% url 'signup' %}" class="nav-link font-weight-bold">Регистрация</a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

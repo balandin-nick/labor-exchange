@@ -1,12 +1,12 @@
 from typing import Any, Union
 
-from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import CreateView
 from django.views.generic.edit import FormView
 
 from .forms import LaborExchangeUserCreationForm, LaborExchangeUserLoginForm
+from .tools import UserLoginManager
 
 
 __all__ = [
@@ -28,19 +28,16 @@ class UserLoginView(FormView):
 
     def form_valid(self, form) -> Union[HttpResponse, HttpResponseRedirect]:
         cleaned_data = form.cleaned_data
-        user = authenticate(
+        login_result = UserLoginManager(
             email=cleaned_data['email'],
             password=cleaned_data['password'],
-        )
+            request=self.request,
+        ).authenticate_and_login()
 
-        if user is None:
-            return HttpResponse('Invalid authentication', status=400)
-
-        if user.is_active:
-            login(self.request, user)
+        if login_result.status_code == 200:
             return super(UserLoginView, self).form_valid(form)
 
-        return HttpResponse('Disabled account', status=423)
+        return login_result
 
 
 class UserSignupView(CreateView):
@@ -50,14 +47,14 @@ class UserSignupView(CreateView):
 
     def post(self, request, *args, **kwargs):
         response = super(UserSignupView, self).post(request, *args, **kwargs)
-
         if response.status_code == 302:
-            login(
+            login_result = UserLoginManager(
+                email=request.POST['email'],
+                password=request.POST['password1'],
                 request=request,
-                user=authenticate(
-                    username=request.POST['email'],
-                    password=request.POST['password1'],
-                ),
-            )
+            ).authenticate_and_login()
+
+            if login_result.status_code != 200:
+                return login_result
 
         return response
