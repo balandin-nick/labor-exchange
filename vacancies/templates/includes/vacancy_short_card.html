@@ -1,31 +1,25 @@
-<div class="card mb-4">
-    <div class="card-body px-4">
-        <div class="row">
-            <div class="col-12 col-md-8 col-lg-9">
-                <h2 class="h2 pb-2">
-                    <a href="{% url 'vacancy-detail' vacancy_id=vacancy.pk %}">{{ vacancy.title }}</a>
-                </h2>
+<div class="col-12 col-md-8 col-lg-9">
+    <h2 class="h2 pb-2">
+        <a href="{% url 'vacancy-detail' vacancy_id=vacancy.pk %}">{{ vacancy.title }}</a>
+    </h2>
 
-                <p class="mb-2">
-                    {% for skill in vacancy.skill_list %}
-                        {% if forloop.counter > 1 %} • {% endif %}{{ skill }}
-                    {% endfor %}
-                </p>
+    <p class="mb-2">
+        {% for skill in vacancy.skill_list %}
+            {% if forloop.counter > 1 %} • {% endif %}{{ skill }}
+        {% endfor %}
+    </p>
 
-                <p>
-                    {% if vacancy.salary_min %}от {{ vacancy.salary_min }}{% endif %}
-                    {% if vacancy.salary_max %}до {{ vacancy.salary_max }}{% endif %}
-                    {% if vacancy.salary_min or vacancy.salary_max %}₽{% else %}Не указано{% endif %}
-                </p>
+    <p>
+        {% if vacancy.salary_min %}от {{ vacancy.salary_min }}{% endif %}
+        {% if vacancy.salary_max %}до {{ vacancy.salary_max }}{% endif %}
+        {% if vacancy.salary_min or vacancy.salary_max %}₽{% else %}Не указано{% endif %}
+    </p>
 
-                <p class="text-muted pt-1">{{ vacancy.published_at }}</p>
-            </div>
+    <p class="text-muted pt-1">{{ vacancy.published_at }}</p>
+</div>
 
-            <div class="col-12 col-md-4 col-lg-3 d-flex align-items-end">
-                <a href="{% url 'company-detail' company_id=vacancy.company_id %}">
-                    <img src="{{ vacancy.company.logo.url }}" width="130" height="80" alt="">
-                </a>
-            </div>
-        </div>
-    </div>
+<div class="col-12 col-md-4 col-lg-3 d-flex align-items-end">
+    <a href="{% url 'company-detail' company_id=vacancy.company_id %}">
+        <img src="{{ vacancy.company.logo.url }}" width="130" height="80" alt="">
+    </a>
 </div>
