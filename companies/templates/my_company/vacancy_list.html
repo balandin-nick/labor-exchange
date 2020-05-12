@@ -5,9 +5,9 @@
         <div class="col-12 col-lg-4">
             <aside class="pt-3 pb-4 px-4 mb-5 card">
                 <h1 class="h4 pt-2 pb-2">Моя компания</h1>
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <div class="nav flex-column nav-pills">
                     <a class="nav-link" href="{% url 'my-company' %}">1. Информация о&nbsp;компании</a>
-                    <a class="nav-link active" href="{% url 'vacancy-list' %}">2. Вакансии</a>
+                    <a class="nav-link active" href="{% url 'my-company-vacancy-list' %}">2. Вакансии</a>
                 </div>
             </aside>
         </div>
@@ -18,7 +18,7 @@
                     <section class="tab-pane fade show active">
                         <h2 class="h4 pt-2 pb-3">Вакансии</h2>
 
-                        {% for vacancy in vacancy_list %}
+                        {% for vacancy in company.vacancies.all %}
                             <div class="card mt-3">
                                 <div class="card-body px-4">
                                     <div class="row align-items-center">
@@ -28,22 +28,14 @@
                                             </a>
 
                                             <p class="mb-1">
-                                                <span class="mr-4">
-                                                    {% if vacancy.salary_min %}
-                                                        от {{ vacancy.salary_min }}
-                                                    {% endif %}
+                                                {% if vacancy.salary_min %}от {{ vacancy.salary_min }}{% endif %}
+                                                {% if vacancy.salary_max %}до {{ vacancy.salary_max }}{% endif %}
 
-                                                    {% if vacancy.salary_max %}
-                                                        до {{ vacancy.salary_max }}
-                                                    {% endif %}
-
-                                                    {% if vacancy.salary_min or vacancy.salary_max %}
-                                                        ₽
-                                                    {% else %}
-                                                        Не указано
-                                                    {% endif %}
-                                                </span>
-                                                <a href="#" class="text-info">3 отклика</a>
+                                                {% if vacancy.salary_min or vacancy.salary_max %}
+                                                    ₽
+                                                {% else %}
+                                                    Не указано
+                                                {% endif %}
                                             </p>
                                         </div>
 

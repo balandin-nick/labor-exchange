@@ -1,6 +1,5 @@
 from typing import Any, Dict
 
-from django.core.exceptions import ValidationError
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import redirect
@@ -19,6 +18,7 @@ __all__ = [
     'MyCompanyControlView',
     'MyCompanyCreateView',
     'MyCompanyUpdateView',
+    'MyCompanyVacanciesView',
 ]
 
 
@@ -79,7 +79,7 @@ class MyCompanyUpdateView(UpdateView, LoginRequiredMixin):
     def get_object(self, queryset=None) -> Company:
         company = Company.get_user_company(self.request.user)
         if not company:
-            raise ValidationError(f'User {self.request.user.name} {self.request.user.surname} has no company')
+            return redirect('my-company-control')
 
         return company
     
@@ -97,3 +97,15 @@ class MyCompanyUpdateView(UpdateView, LoginRequiredMixin):
         context['is_success_created'] = self.request.session.pop('is_after_creating', False)
         context['is_success_updated'] = self.request.session.pop('is_after_updating', False)
         return context
+
+
+class MyCompanyVacanciesView(DetailView, LoginRequiredMixin):
+    model = Company
+    template_name = 'my_company/vacancy_list.html'
+
+    def get_object(self, queryset=None) -> Company:
+        company = Company.get_user_company(self.request.user)
+        if not company:
+            return redirect('my-company-control')
+
+        return company
