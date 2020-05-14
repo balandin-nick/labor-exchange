@@ -33,7 +33,7 @@ class CompanyDetailView(DetailView):
     template_name = 'company_detail.html'
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
-        context = super(CompanyDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['previous_url'] = self.request.META.get('HTTP_REFERER')
         return context
 
@@ -45,22 +45,22 @@ class MyCompanyControlView(TemplateView):
         if not self.request.user.is_authenticated:
             return redirect('login')
 
-        if Company.get_user_company(self.request.user):
+        if self.request.user.companies.count() > 0:
             return redirect('my-company')
 
-        return super(MyCompanyControlView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
-class MyCompanyCreateView(CreateView, LoginRequiredMixin):
+class MyCompanyCreateView(LoginRequiredMixin, CreateView):
     model = Company
     fields = ['name', 'location', 'logo', 'employee_count', 'description']
     template_name = 'my_company/display.html'
 
     def dispatch(self, request, *args, **kwargs) -> HttpResponseNotAllowed:
-        if Company.get_user_company(self.request.user):
+        if self.request.user.companies.count() > 0:
             return redirect('my-company')
 
-        return super(MyCompanyCreateView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form) -> HttpResponseRedirect:
         instance: Company = form.save(commit=False)
@@ -71,7 +71,7 @@ class MyCompanyCreateView(CreateView, LoginRequiredMixin):
         return redirect('my-company')
 
 
-class MyCompanyUpdateView(UpdateView, LoginRequiredMixin):
+class MyCompanyUpdateView(LoginRequiredMixin, UpdateView):
     model = Company
     fields = ['name', 'location', 'logo', 'employee_count', 'description']
     template_name = 'my_company/display.html'
@@ -86,7 +86,7 @@ class MyCompanyUpdateView(UpdateView, LoginRequiredMixin):
     def form_invalid(self, form) -> Any:
         self.request.session['is_after_creating'] = False
         self.request.session['is_after_updating'] = False
-        return super(MyCompanyUpdateView, self).form_invalid(form)
+        return super().form_invalid(form)
 
     def form_valid(self, form) -> HttpResponseRedirect:
         self.request.session['is_after_updating'] = True
@@ -99,7 +99,7 @@ class MyCompanyUpdateView(UpdateView, LoginRequiredMixin):
         return context
 
 
-class MyCompanyVacanciesView(DetailView, LoginRequiredMixin):
+class MyCompanyVacanciesView(LoginRequiredMixin, DetailView):
     model = Company
     template_name = 'my_company/vacancy_list.html'
 

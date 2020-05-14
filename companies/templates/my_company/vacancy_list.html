@@ -2,15 +2,7 @@
 
 {% block content %}
     <div class="row mt-5">
-        <div class="col-12 col-lg-4">
-            <aside class="pt-3 pb-4 px-4 mb-5 card">
-                <h1 class="h4 pt-2 pb-2">Моя компания</h1>
-                <div class="nav flex-column nav-pills">
-                    <a class="nav-link" href="{% url 'my-company' %}">1. Информация о&nbsp;компании</a>
-                    <a class="nav-link active" href="{% url 'my-company-vacancy-list' %}">2. Вакансии</a>
-                </div>
-            </aside>
-        </div>
+        {% include 'my_company/includes/aside.html' with nl_vacancy_active="active" %}
 
         <div class="col-12 col-lg-8">
             <div class="card">
@@ -40,12 +32,19 @@
                                         </div>
 
                                         <div class="col-6 col-lg-4 text-right">
-                                            <a href="#" class="btn btn-outline-info">Изменить</a>
+                                            <a href="{% url 'vacancy-update' vacancy_id=vacancy.pk %}"
+                                               class="btn btn-outline-info">
+                                                Изменить
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
+
+                        <div class="card mt-3">
+                            <a href="{% url 'vacancy-create' %}" class="btn btn-info mb-8">Добавить вакансию</a>
+                        </div>
                     </section>
                 </div>
             </div>
