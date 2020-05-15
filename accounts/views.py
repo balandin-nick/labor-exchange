@@ -48,10 +48,6 @@ class UserSignupView(CreateView):
     def post(self, request, *args, **kwargs) -> Any:
         response = super(UserSignupView, self).post(request, *args, **kwargs)
         if response.status_code == 302:
-            if request.POST['password1'] != request.POST['password2']:
-                # TODO: Записать в форму ошибки.
-                return
-
             login_result = UserLoginManager(
                 email=request.POST['email'],
                 password=request.POST['password1'],
