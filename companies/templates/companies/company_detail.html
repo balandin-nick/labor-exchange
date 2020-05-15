@@ -14,14 +14,14 @@
             <strong>{{ company.name }}</strong>
         </h1>
 
-        <p class="text-center pt-1">Компания, 5 вакансий</p>
+        <p class="text-center pt-1">Количество вакансий: {{ company.vacancies.count }}</p>
 
         <div class="row mt-5">
             <div class="col-12 col-lg-8 offset-lg-2 m-auto">
                 <div class="card mb-4">
                     <div class="card-body px-4">
                         {% for vacancy in company.vacancies.all %}
-                            <div class="row">{% include 'includes/vacancy_short_card.html' %}</div>
+                            <div class="row">{% include 'vacancies/vacancy_preview.html' %}</div>
                         {% endfor %}
                     </div>
                 </div>

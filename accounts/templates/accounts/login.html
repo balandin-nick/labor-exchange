@@ -11,13 +11,13 @@
                 </div>
 
                 <div class="mt-5 form-label-group">
-                    <p class="text-muted">Электропочта</p>
+                    <p class="text-muted">{{ form.email.label_tag }}</p>
                     <input type="email" id="email" name="email" class="form-control" required autofocus>
                     <label for="email"></label>
                 </div>
 
                 <div class="form-label-group">
-                    <p class="text-muted">Пароль</p>
+                    <p class="text-muted">{{ form.password.label_tag }}</p>
                     <input type="password" id="password" name="password" class="form-control" required>
                     <label for="password"></label>
                 </div>
@@ -28,5 +28,5 @@
         </div>
     </div>
 
-    {% include 'includes/auth_errors.html' %}
+    {% include 'accounts/auth_errors.html' %}
 {% endblock %}

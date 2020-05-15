@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row mt-5">
+        {% include 'my_company/my_company_sidebar.html' with nl_company_info_active="active" %}
+
+        <div class="col-12 col-lg-8">
+            <div class="card">
+                <div class="card-body px-4 pb-4">
+                    <section class="tab-pane fade show active">
+                        <h2 class="h4 pt-2 pb-3">Информация о&nbsp;компании</h2>
+
+                        {% if is_success_created or is_success_updated %}
+                            <p class="alert alert-info" role="alert">
+                                {% if is_success_created %}
+                                    Информация о компании сохранена
+                                {% elif is_success_updated %}
+                                    Информация о компании обновлена
+                                {% endif %}
+                            </p>
+                        {% endif %}
+
+                        {% include 'my_company/my_company_form.html' %}
+
+                        {% if form.errors %}
+                            {% include 'form_errors.html' %}
+                        {% endif %}
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

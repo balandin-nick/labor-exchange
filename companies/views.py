@@ -24,13 +24,13 @@ __all__ = [
 
 class CompanyListView(ListView):
     model = Company
-    template_name = 'company_list.html'
+    template_name = 'companies/company_list.html'
 
 
 class CompanyDetailView(DetailView):
     model = Company
     pk_url_kwarg = 'company_id'
-    template_name = 'company_detail.html'
+    template_name = 'companies/company_detail.html'
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -39,14 +39,14 @@ class CompanyDetailView(DetailView):
 
 
 class MyCompanyControlView(TemplateView):
-    template_name = 'my_company/missing.html'
+    template_name = 'my_company/my_company_missing.html'
 
     def dispatch(self, request, *args, **kwargs) -> HttpResponseNotAllowed:
         if not self.request.user.is_authenticated:
             return redirect('login')
 
         if self.request.user.companies.count() > 0:
-            return redirect('my-company')
+            return redirect('my-company-info')
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -54,11 +54,11 @@ class MyCompanyControlView(TemplateView):
 class MyCompanyCreateView(LoginRequiredMixin, CreateView):
     model = Company
     fields = ['name', 'location', 'logo', 'employee_count', 'description']
-    template_name = 'my_company/display.html'
+    template_name = 'my_company/my_company_info.html'
 
     def dispatch(self, request, *args, **kwargs) -> HttpResponseNotAllowed:
         if self.request.user.companies.count() > 0:
-            return redirect('my-company')
+            return redirect('my-company-info')
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -68,13 +68,13 @@ class MyCompanyCreateView(LoginRequiredMixin, CreateView):
         instance.save()
 
         self.request.session['is_after_creating'] = True
-        return redirect('my-company')
+        return redirect('my-company-info')
 
 
 class MyCompanyUpdateView(LoginRequiredMixin, UpdateView):
     model = Company
     fields = ['name', 'location', 'logo', 'employee_count', 'description']
-    template_name = 'my_company/display.html'
+    template_name = 'my_company/my_company_info.html'
 
     def get_object(self, queryset=None) -> Company:
         company = Company.get_user_company(self.request.user)
@@ -82,6 +82,12 @@ class MyCompanyUpdateView(LoginRequiredMixin, UpdateView):
             return redirect('my-company-control')
 
         return company
+
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['is_success_created'] = self.request.session.pop('is_after_creating', False)
+        context['is_success_updated'] = self.request.session.pop('is_after_updating', False)
+        return context
     
     def form_invalid(self, form) -> Any:
         self.request.session['is_after_creating'] = False
@@ -89,19 +95,14 @@ class MyCompanyUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
     def form_valid(self, form) -> HttpResponseRedirect:
+        form.save()
         self.request.session['is_after_updating'] = True
-        return redirect('my-company')
-
-    def get_context_data(self, **kwargs) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context['is_success_created'] = self.request.session.pop('is_after_creating', False)
-        context['is_success_updated'] = self.request.session.pop('is_after_updating', False)
-        return context
+        return redirect('my-company-info')
 
 
 class MyCompanyVacanciesView(LoginRequiredMixin, DetailView):
     model = Company
-    template_name = 'my_company/vacancy_list.html'
+    template_name = 'my_company/my_company_vacancies.html'
 
     def get_object(self, queryset=None) -> Company:
         company = Company.get_user_company(self.request.user)

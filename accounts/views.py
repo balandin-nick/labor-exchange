@@ -18,7 +18,7 @@ __all__ = [
 class UserLoginView(FormView):
     form_class = LaborExchangeUserLoginForm
     success_url = '/'
-    template_name = 'login.html'
+    template_name = 'accounts/login.html'
 
     def get(self, request, *args, **kwargs) -> Any:
         if request.user.is_authenticated:
@@ -43,11 +43,15 @@ class UserLoginView(FormView):
 class UserSignupView(CreateView):
     form_class = LaborExchangeUserCreationForm
     success_url = '/'
-    template_name = 'signup.html'
+    template_name = 'accounts/signup.html'
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs) -> Any:
         response = super(UserSignupView, self).post(request, *args, **kwargs)
         if response.status_code == 302:
+            if request.POST['password1'] != request.POST['password2']:
+                # TODO: Записать в форму ошибки.
+                return
+
             login_result = UserLoginManager(
                 email=request.POST['email'],
                 password=request.POST['password1'],

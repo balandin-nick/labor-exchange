@@ -32,7 +32,7 @@
                     {{ vacancy.company.location }}
                 </p>
 
-                <div style="line-height: 1.8;">{{ vacancy.description }}</div>
+                <div style="line-height: 1.8;">{{ vacancy.description|default_if_none:""|linebreaksbr }}</div>
             </section>
         </div>
     </div>

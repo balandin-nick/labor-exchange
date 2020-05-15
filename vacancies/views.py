@@ -25,7 +25,7 @@ class VacancyListView(ListView):
     model = Vacancy
     queryset = Vacancy.objects.select_related('company')
     context_object_name = 'vacancy_list'
-    template_name = 'vacancy_list.html'
+    template_name = 'vacancies/vacancy_list.html'
     page_header = 'Все вакансии'
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
@@ -54,7 +54,7 @@ class VacancyDetailView(DetailView):
     model = Vacancy
     queryset = Vacancy.objects.select_related('company').all()
     pk_url_kwarg = 'vacancy_id'
-    template_name = 'vacancy_detail.html'
+    template_name = 'vacancies/vacancy_detail.html'
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -65,7 +65,7 @@ class VacancyDetailView(DetailView):
 class VacancyCreateView(LoginRequiredMixin, CreateView):
     model = Vacancy
     fields = ['title', 'specialty', 'salary_min', 'salary_max', 'skills', 'description']
-    template_name = 'vacancy_form.html'
+    template_name = 'vacancies/vacancy_form.html'
 
     def dispatch(self, request, *args, **kwargs) -> HttpResponseNotAllowed:
         if not self.request.user.companies.count() > 0:
@@ -92,7 +92,7 @@ class VacancyUpdateView(LoginRequiredMixin, UpdateView):
     queryset = Vacancy.objects.select_related('specialty')
     pk_url_kwarg = 'vacancy_id'
     fields = ['title', 'specialty', 'salary_min', 'salary_max', 'skills', 'description']
-    template_name = 'vacancy_form.html'
+    template_name = 'vacancies/vacancy_form.html'
 
     def dispatch(self, request, *args, **kwargs) -> HttpResponseNotAllowed:
         if not self.request.user.companies.count() > 0:

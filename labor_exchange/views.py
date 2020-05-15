@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from companies.models import Company
 from vacancies.models import Specialty
 
+
 __all__ = [
     'HomeView',
 ]
