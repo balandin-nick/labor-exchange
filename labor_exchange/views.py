@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from django.db.models import Count
 from django.views.generic import TemplateView
 
@@ -13,7 +15,7 @@ __all__ = [
 class HomeView(TemplateView):
     template_name = 'index.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['company_list'] = []
         context['specialty_list'] = []

@@ -73,7 +73,7 @@ DATABASES = {
         'NAME': database_settings.db_name,
         'USER': database_settings.username,
         'PASSWORD': database_settings.password,
-    }
+    },
 }
 
 AUTH_PASSWORD_VALIDATORS = [
