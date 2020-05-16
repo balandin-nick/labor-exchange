@@ -1,7 +1,6 @@
 **/.DS_Store
 .idea/
 .vscode/
-media/
 reborn_service.sh
 
 ### Python template
