@@ -60,7 +60,7 @@ def _fill_companies() -> None:
         company_instance = Company(
             name=companies_name,
             location='Самый лучший город на Земле',
-            logo=str(company_logos_directory / f'logo{index + 1}.png'),
+            logo=str(company_logos_directory / f'b003a3c{index + 1}.png'),
             owner=owner,
             employee_count=choice(range(1, 300)),
             description='Это компания без описания, потому что её HR-специалисты — ленивые задницы',

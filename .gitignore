@@ -1,7 +1,9 @@
 **/.DS_Store
 .idea/
 .vscode/
-/media
+media/company_logos/*
+!media/company_logos/b003a3c*.png
+!media/specialty_logos/
 reborn_service.sh
 
 ### Python template
