@@ -4,7 +4,7 @@ from typing import Optional
 
 from django.db.models import CASCADE, CharField, ForeignKey, ImageField, IntegerField, Model, TextField
 
-from labor_exchange.settings import AUTH_USER_MODEL
+from labor_exchange.settings import AUTH_USER_MODEL, MEDIA_COMPANY_IMAGE_DIR
 
 
 __all__ = [
@@ -15,7 +15,7 @@ __all__ = [
 class Company(Model):
     name = CharField(verbose_name='Название', max_length=255)
     location = CharField(verbose_name='Локация', max_length=100)
-    logo = ImageField(verbose_name='Логотип', upload_to='company_logos', null=True)
+    logo = ImageField(verbose_name='Логотип', upload_to=MEDIA_COMPANY_IMAGE_DIR, null=True)
     owner = ForeignKey(to=AUTH_USER_MODEL, verbose_name='Владелец', on_delete=CASCADE, related_name='companies')
     employee_count = IntegerField(verbose_name='Количество сотрудников', null=True)
     description = TextField(verbose_name='Описание')

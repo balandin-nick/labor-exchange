@@ -13,6 +13,7 @@ from django.db.models import (
 )
 
 from companies.models import Company
+from labor_exchange.settings import MEDIA_SPECIALITY_IMAGE_DIR
 
 
 __all__ = [
@@ -24,7 +25,7 @@ __all__ = [
 class Specialty(Model):
     code = CharField(verbose_name='Код', max_length=50, unique=True)
     title = CharField(verbose_name='Наименование', max_length=100)
-    picture = ImageField(verbose_name='Изображение', upload_to='specialty_logos', null=True)
+    picture = ImageField(verbose_name='Изображение', upload_to=MEDIA_SPECIALITY_IMAGE_DIR, null=True)
 
     class Meta:
         verbose_name = 'Специальность'
