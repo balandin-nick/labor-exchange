@@ -32,8 +32,25 @@ services:
       DB_NAME: ${DB_NAME}
     volumes:
       - .:/opt/labor-exchange
-  web:
-    container_name: labor-exchange_web
+  runserver:
+    container_name: labor-exchange_dev_server
+    image: ${LABOR_EXCHANGE_IMAGE}
+    ports:
+      - "8000:8000"
+    environment:
+      APP_DEBUG: "true"
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+      SECRET_KEY: ${SECRET_KEY}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    volumes:
+      - .:/opt/labor-exchange
+    command: dev-server
+  gunicorn:
+    container_name: labor-exchange_production_server
     image: ${LABOR_EXCHANGE_IMAGE}
     ports:
       - "8000:8000"
@@ -48,4 +65,4 @@ services:
       DB_NAME: ${DB_NAME}
     volumes:
       - .:/opt/labor-exchange
-    command: django-server
+    command: production-server

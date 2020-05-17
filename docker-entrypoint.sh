@@ -3,7 +3,10 @@
 set -e
 
 case "$1" in
-    django-server)
+    runserver)
+        exec python manage.py runserver 0.0.0.0:8000 --nostatic
+        ;;
+    gunicorn)
         exec gunicorn labor_exchange.wsgi:application --bind 0.0.0.0:8000
         ;;
     makemigrations)
