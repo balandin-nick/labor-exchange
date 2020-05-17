@@ -2,7 +2,6 @@
 .idea/
 .vscode/
 media/
-staticfiles/
 reborn_service.sh
 
 ### Python template
