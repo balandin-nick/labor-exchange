@@ -20,7 +20,6 @@ class DjangoSettings(_SettingsConfigureModel):
     allowed_hosts: List[str] = Field(default='', env='allowed_hosts')
     debug: bool = Field(default=False, env='app_debug')
     secret_key: str = Field(..., env='secret_key')
-    static_host: str = Field(default='', env='static_host')
     timezone: tz = tz.utc
 
 
