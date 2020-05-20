@@ -3,6 +3,7 @@
 .vscode/
 media/
 reborn_service.sh
+/resumes
 
 ### Python template
 # Byte-compiled / optimized / DLL files
